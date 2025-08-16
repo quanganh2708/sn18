@@ -62,6 +62,7 @@
       document.body.style.background = bgColors[currentQuestion % bgColors.length];
       container.innerHTML = `
         <h2>${q.text}</h2>
+        <div id="extra"></div>
         <button id="yesBtn">Có ✅</button>
         <button id="noBtn">Không ❌</button>
       `;
@@ -92,8 +93,9 @@
     }
 
     function randomMsg() {
-      const msgs = ["bro chọn sai rồi 😢", "nhai gì đó đi 🍜", "ăn lẹ đi bro 🥩"];
-      container.innerHTML += `<p>${msgs[Math.floor(Math.random()*msgs.length)]}</p>`;
+      const msgs = ["Bro chọn sai rồi 😢", "Ăn lẹ đi bro 🥩", "Đừng nhịn đói nha 🍜"];
+      const extra = document.getElementById("extra");
+      extra.innerHTML = `<p>${msgs[Math.floor(Math.random()*msgs.length)]}</p>`;
     }
 
     function showComment(msg) {
