@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>🎉 Sinh nhật Quang Anh 🎉</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      transition: background 1s ease; /* đổi màu mượt */
+    }
+    #container {
+      margin-top: 100px;
+    }
+    button {
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #444;
+      color: white;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #666;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>🎂 Chào mừng đến với lời mời sinh nhật 🎂</h1>
+    <button id="startBtn">Tiếp tục 👉</button>
+  </div>
+
+  <script>
+    let currentQuestion = 0;
+    const container = document.getElementById("container");
+
+    const bgColors = ["#ffcccc", "#ccffcc", "#cce5ff", "#fff3b0", "#ffd6ff", "#d0f4de"];
+
+    const questions = [
+      { text: "🎂 Đi sinh nhật 18+ của tui nha homies 🥳", yes: () => nextQuestion(), no: (y,n) => swapText(y,n) },
+      { text: "👻 Xem phim ma được không bro? 🍿", yes: () => showComment("Bro ngầu điên 🤘🔥"), no: (y,n) => moveButton(n,y) },
+      { text: "🎤 Bro có muốn làm ca sĩ không? 🎶", yes: () => showComment("Mì tôm, bò khô, radio 🎧"), no: (y) => growYesBtn(y) },
+      { text: "🍔 Đi mlem mlem gì đó nha bro 😋", yes: () => showComment("Bulking đến chết 💪🍗"), no: () => randomMsg() },
+      { text: "🧸 Gắp gấu hoặc đi chơi máy đồng xu ở vincom/emart nhé 🎮", yes: () => showComment("Anh em mình cứ thế thôi hẹ hẹ hẹ 😆🤝"), no: (y,n) => n.style.display="none" },
+      { text: "📩 Thư mời chính thức", yes: () => showInvite(), no: () => {} }
+    ];
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQuestion];
+      document.body.style.background = bgColors[currentQuestion % bgColors.length];
+      container.innerHTML = `
+        <h2>${q.text}</h2>
+        <button id="yesBtn">Có ✅</button>
+        <button id="noBtn">Không ❌</button>
+      `;
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      yesBtn.addEventListener("click", () => q.yes(yesBtn, noBtn));
+      noBtn.addEventListener("click", () => q.no(yesBtn, noBtn));
+      noBtn.addEventListener("mouseover", () => {
+        if (currentQuestion === 1) moveButton(noBtn, yesBtn);
+      });
+    }
+
+    function swapText(yesBtn, noBtn) {
+      const yesPos = yesBtn.innerHTML;
+      yesBtn.innerHTML = noBtn.innerHTML;
+      noBtn.innerHTML = yesPos;
+    }
+
+    function moveButton(noBtn) {
+      noBtn.style.position = "absolute";
+      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    }
+
+    function growYesBtn(yesBtn) {
+      let size = parseInt(window.getComputedStyle(yesBtn).fontSize);
+      yesBtn.style.fontSize = (size + 10) + "px";
+    }
+
+    function randomMsg() {
+      const msgs = ["bro chọn sai rồi 😢", "nhai gì đó đi 🍜", "ăn lẹ đi bro 🥩"];
+      container.innerHTML += `<p>${msgs[Math.floor(Math.random()*msgs.length)]}</p>`;
+    }
+
+    function showComment(msg) {
+      container.innerHTML = `<h2>${msg}</h2>
+      <button onclick="nextQuestion()">Tiếp tục 👉</button>`;
+    }
+
+    function showInvite() {
+      document.body.style.background = "#fff";
+      container.innerHTML = `
+        <h2>🎉 Quang Anh mời bạn tham dự sinh nhật 🎉</h2>
+        <p>📅 Ngày: <b>30/08/2025</b> — 10h30 sáng</p>
+        <p>🎤 Hoạt động: Escape room 🕵️, Đi ăn + cà phê ☕🍰, Xem phim 🎬, Đi chơi 🕹️...</p>
+        <p>🙏 Cảm ơn vì sự có mặt của bạn ❤️</p>
+      `;
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      renderQuestion();
+    });
+  </script>
+</body>
+</html>
